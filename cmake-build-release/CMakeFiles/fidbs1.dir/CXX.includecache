@@ -1,0 +1,54 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHashTable.h
+cHashTableNode.h
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHashTableNode.h
+new
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/new
+
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHashTableNode.h
+cstdio
+-
+cHashTableNode.h
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHashTableNode.h
+cMemory.h
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cMemory.h
+
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHeapTable.h
+cassert
+-
+cstdlib
+-
+
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHeapTable_obj.h
+cassert
+-
+cstdlib
+-
+cRecord.h
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cRecord.h
+
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cMemory.h
+stdio.h
+-
+
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cRecord.h
+
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/main.cpp
+cstdio
+-
+chrono
+-
+cHeapTable.h
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHeapTable.h
+cHashTable.h
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHashTable.h
+cHeapTable_obj.h
+/Users/danielbill/Disk Google/School/Master/2 semestr/FIDBS/fidbs1/cHeapTable_obj.h
+
