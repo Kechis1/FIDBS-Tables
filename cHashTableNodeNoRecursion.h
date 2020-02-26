@@ -15,15 +15,14 @@
 template<class TKey, class TData>
 class cHashTableNodeNoRecursion
 {
-private:
-    bool mEmptyNode;
-
 public:
     cHashTableNodeNoRecursion* mNextNode;
     TKey mKey;
     TData mData;
+    bool mEmptyNode;
 
-    cHashTableNodeNoRecursion(const TKey& mKey, TData& mData);
+    explicit cHashTableNodeNoRecursion(const TKey& mKey, TData& mData);
+    cHashTableNodeNoRecursion();
     ~cHashTableNodeNoRecursion();
 };
 
@@ -32,6 +31,12 @@ cHashTableNodeNoRecursion<TKey, TData>::cHashTableNodeNoRecursion(const TKey& mK
 {
     this->mKey = mKey;
     this->mData = mData;
+    mNextNode = nullptr;
+    mEmptyNode = true;
+}
+template<class TKey, class TData>
+cHashTableNodeNoRecursion<TKey, TData>::cHashTableNodeNoRecursion()
+{
     mNextNode = nullptr;
     mEmptyNode = true;
 }

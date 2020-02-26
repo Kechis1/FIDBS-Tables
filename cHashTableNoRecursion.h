@@ -64,64 +64,67 @@ cHashTableNoRecursion<TKey, TData>::~cHashTableNoRecursion() {
 template<class TKey, class TData>
 bool cHashTableNoRecursion<TKey, TData>::Add(const TKey &key, const TData &data) {
     int hv = HashValue(key);
+    cHashTableNodeNoRecursion<TKey, TData> * item = mHashTable[hv];
+    bool ret = false;
 
-    if (mHashTable[hv] == nullptr) {
+    if (item == nullptr) {
         if (mMemory == nullptr) {
-            cHashTableNodeNoRecursion<TKey, TData> *prev = NULL;
-            cHashTableNodeNoRecursion<TKey, TData> *entry = mHashTable[hv];
-
-            while (entry != NULL) {
-                prev = entry;
-                entry = entry->mNextNode;
-            }
-
-            entry = new cHashTableNodeNoRecursion<TKey, TData>(key, data);
-            if (prev == NULL) {
-                mHashTable[hv] = entry;
-            } else {
-                prev->mNextNode = entry;
-            }
+            item = new cHashTableNodeNoRecursion<TKey, TData>();
         } else {
-            char *mem = mMemory->New(sizeof(cHashTableNodeNoRecursion<TKey, TData>));
+            char * mem = mMemory->New(sizeof(cHashTableNodeNoRecursion<TKey, TData>));
+            item = new(mem)cHashTableNodeNoRecursion<TKey, TData>();
+        }
+        mHashTable[hv] = item;
+        mNodeCount++;
+    }
 
-            cHashTableNodeNoRecursion<TKey, TData> *prev = NULL;
-            cHashTableNodeNoRecursion<TKey, TData> *entry = mHashTable[hv];
-
-            while (entry != NULL) {
-                prev = entry;
-                entry = entry->mNextNode;
-            }
-
-            entry = new(mem)cHashTableNodeNoRecursion<TKey, TData>(key, data);
-            if (prev == NULL) {
-                mHashTable[hv] = entry;
-            } else {
-                prev->mNextNode = entry;
+    while (!item->mEmptyNode) {
+        if (item->mKey == key) {
+            ret = false;
+        } else {
+            if (item->mNextNode == nullptr) {
+                if (mMemory == nullptr) {
+                    item->mNextNode = new cHashTableNodeNoRecursion<TKey, TData>();
+                } else {
+                    char * mem = mMemory->New(sizeof(cHashTableNodeNoRecursion<TKey, TData>));
+                    item->mNextNode = new (mem) cHashTableNodeNoRecursion<TKey, TData>();
+                }
+                mNodeCount++;
+                item = item->mNextNode;
             }
         }
     }
-    return true;
+
+    if (item->mEmptyNode) {
+        item->mKey = key;
+        item->mData = data;
+        item->mEmptyNode = false;
+        mItemCount++;
+        ret = true;
+    }
+    return ret;
 }
 
 template<class TKey, class TData>
 bool cHashTableNoRecursion<TKey, TData>::Find(const TKey &key, TData &data) const {
-    bool found = false;
     int hv = HashValue(key);
+    cHashTableNodeNoRecursion<TKey, TData> *item = mHashTable[hv];
 
-    if (mHashTable[hv] == nullptr) {
+    if (item == nullptr) {
         return false;
     }
 
-    cHashTableNodeNoRecursion<TKey, TData> *entry = mHashTable[hv];
-
-    while (entry != NULL) {
-        if (entry->mKey == key) {
-            found = true;
+    while (item != nullptr) {
+        if (item->mKey == key) {
+            data = item->mData;
+            return true;
+        } else {
+            if (item->mNextNode == nullptr) return false;
+            item = item->mNextNode;
         }
-        entry = entry->mNextNode;
     }
 
-    return found;
+    return false;
 }
 
 template<class TKey, class TData>

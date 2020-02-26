@@ -3,7 +3,7 @@
 #include "cHeapTable.h"
 #include "cHashTable.h"
 #include "cHeapTable_obj.h"
-// #include "cHashTableNoRecursion.h"
+#include "cHashTableNoRecursion.h"
 
 #define TKey int
 #define TData int
@@ -241,7 +241,7 @@ void runHashTableMemory(const int rowCount, cMemory*memory ) {
     hashTable->PrintStat();
     delete hashTable;
 }
-/*
+
 
 void runHashTableMemoryNoRecursion(const int rowCount, cMemory*memory ) {
     auto *hashTable = new cHashTableNoRecursion<TKey, TData>(rowCount / 2, memory);
@@ -261,13 +261,13 @@ void runHashTableMemoryNoRecursion(const int rowCount, cMemory*memory ) {
            GetThroughput(rowCount, time_span.count()));
 
     t1 = high_resolution_clock::now();
-    */
-/*for (int i = 0; i < rowCount; i++) {
+
+    for (int i = 0; i < rowCount; i++) {
         bool ret = hashTable->Find(i, data);
         if (!ret || data != i) {
             printf("CriticalError : Record %d not found! \n", i);
         }
-    }*//*
+    }
 
     t2 = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(t2 - t1);
@@ -276,7 +276,7 @@ void runHashTableMemoryNoRecursion(const int rowCount, cMemory*memory ) {
     hashTable->PrintStat();
     delete hashTable;
 }
-*/
+
 
 int main() {
     int const RowCount = 10000000;
@@ -290,17 +290,17 @@ int main() {
     printf("\n\nRun non-cMemory hash table \n\n");
     runHashTable(RowCount);*/
 
-    auto * memory = new cMemory(250000000);
+    auto * memory = new cMemory(300000000);
     printf("\n\nRun cMemory hash table . \n");
     runHashTableMemory(RowCount, memory);
     memory->PrintStat();
     delete memory;
 
-    /*auto * memory1 = new cMemory(200000000);
+    auto * memory1 = new cMemory(300000000);
     printf("\n\nRun cMemory hash table no recursion. \n");
     runHashTableMemoryNoRecursion(RowCount, memory1);
     memory1->PrintStat();
-    delete memory1;*/
+    delete memory1;
 
     return 0;
 }

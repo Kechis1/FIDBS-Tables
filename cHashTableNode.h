@@ -81,7 +81,7 @@ bool cHashTableNode<TKey, TData>::Add(const TKey &key, const TData &data, cMemor
             ret = false;
         } else {
             if (mNextNode == NULL) {
-                if (memory == NULL) {
+                if (memory == nullptr) {
                     mNextNode = new cHashTableNode<TKey, TData>();
                 } else {
                     char *mem = memory->New(sizeof(cHashTableNode<TKey, TData>));
