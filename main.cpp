@@ -207,17 +207,6 @@ void runHashTableMemory(const int rowCount, cMemory*memory ) {
         if (!hashTable->Add(key, data)) {
             printf("CriticalError: Record %d insertionFailed! \n", i);
         }
-        // for testing only
-        /*for (int j = 0; j <= i; j++) {
-            bool ret = hashTable->Find(j, data);
-            if (!ret || data != j) {
-                printf("CriticalError : Record %d not found ! \n ", i);
-                return;
-            }
-        }*/
-        /*if (i % 10000 == 0) {
-            printf("#Record inserted : %d \r", i);
-        }*/
     }
     auto t2 = high_resolution_clock::now();
     auto time_span = duration_cast < duration < double >> (t2 - t1);
@@ -230,9 +219,6 @@ void runHashTableMemory(const int rowCount, cMemory*memory ) {
         if (!ret || data != i) {
             printf("CriticalError : Record %d not found! \n", i);
         }
-        /*if (i % 10000 == 0) {
-            printf("#Records retrieved : %d \r", i);
-        }*/
     }
     t2 = high_resolution_clock::now();
     time_span = duration_cast<duration<double>>(t2 - t1);
@@ -241,7 +227,6 @@ void runHashTableMemory(const int rowCount, cMemory*memory ) {
     hashTable->PrintStat();
     delete hashTable;
 }
-
 
 void runHashTableMemoryNoRecursion(const int rowCount, cMemory*memory ) {
     auto *hashTable = new cHashTableNoRecursion<TKey, TData>(rowCount / 2, memory);
@@ -277,18 +262,53 @@ void runHashTableMemoryNoRecursion(const int rowCount, cMemory*memory ) {
     delete hashTable;
 }
 
+void runHashTable(const int rowCount)
+{
+    auto *hashTable = new cHashTable<TKey, TData>(rowCount / 2);
+
+    TKey key;
+    TData data;
+    auto t1 = high_resolution_clock::now();
+    for (int i = 0; i < rowCount; i++) {
+        key = data = i;
+        if (!hashTable->AddNoMemory(key, data)) {
+            printf("CriticalError: Record %d insertionFailed! \n", i);
+        }
+    }
+    auto t2 = high_resolution_clock::now();
+    auto time_span = duration_cast < duration < double >> (t2 - t1);
+    printf("Records insertion done, HashTable no memory. Time : %.2f s, Throughput : %.2f mil . op / s . \n", time_span.count(),
+           GetThroughput(rowCount, time_span.count()));
+
+    t1 = high_resolution_clock::now();
+
+    for (int i = 0; i < rowCount; i++) {
+        bool ret = hashTable->Find(i, data);
+        if (!ret || data != i) {
+            printf("CriticalError : Record %d not found! \n", i);
+        }
+    }
+
+    t2 = high_resolution_clock::now();
+    time_span = duration_cast<duration<double>>(t2 - t1);
+    printf("Table scan done, HashTable no memory . Time : %.2f s , Throughput : %.2f mil . op / s . \n ", time_span.count(),
+           GetThroughput(rowCount, time_span.count()));
+    hashTable->PrintStat();
+    delete hashTable;
+}
+
 
 int main() {
     int const RowCount = 10000000;
 
-   /* printf("\n\nRun non-object heap table \n\n");
+    printf("\n\nRun non-object heap table \n\n");
     runNonObjHeapTable(RowCount);
 
     printf("\n\nRun object heap table \n\n");
     runObjHeapTable(RowCount);
 
-    printf("\n\nRun non-cMemory hash table \n\n");
-    runHashTable(RowCount);*/
+    printf("\n\nRun non-cMemory recursion hash table \n\n");
+    runHashTable(RowCount);
 
     auto * memory = new cMemory(300000000);
     printf("\n\nRun cMemory hash table . \n");

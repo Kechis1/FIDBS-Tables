@@ -33,6 +33,7 @@ public :
     ~cHashTable();
 
     bool Add(const TKey &key, const TData &data);
+    bool AddNoMemory(const TKey &key, const TData &data);
 
     bool Find(const TKey &key, TData &data) const;
 
@@ -79,15 +80,15 @@ inline int cHashTable<TKey, TData>::HashValue(const TKey &key) const {
     return key % mSize;
 }
 
-/*template<class TKey, class TData>
-bool cHashTable<TKey, TData>::Add(const TKey &key, const TData &data) {
+template<class TKey, class TData>
+bool cHashTable<TKey, TData>::AddNoMemory(const TKey &key, const TData &data) {
     int hv = HashValue(key);
     if (mHashTable[hv] == NULL) {
         mHashTable[hv] = new cHashTableNode<TKey, TData>();
         mNodeCount++;
     }
-    return mHashTable[hv]->Add(key, data, mItemCount, mNodeCount);
-}*/
+    return mHashTable[hv]->AddNoMemory(key, data, mItemCount, mNodeCount);
+}
 
 template<class TKey, class TData>
 bool cHashTable<TKey, TData>::Add(const TKey &key, const TData &data) {

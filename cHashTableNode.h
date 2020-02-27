@@ -25,7 +25,7 @@ public :
 
     ~cHashTableNode();
 
-    // bool Add(const TKey &key, const TData &data, int &itemCount, int &nodeCount);
+    bool AddNoMemory(const TKey &key, const TData &data, int &itemCount, int &nodeCount);
 
     bool Add(const TKey &key, const TData &data, cMemory *memory, int &itemCount, int &nodeCount);
 
@@ -46,10 +46,8 @@ cHashTableNode<TKey, TData>::~ cHashTableNode() {
     }
 }
 
-// bez memory
-/*
 template<class TKey, class TData>
-bool cHashTableNode<TKey, TData>::Add(const TKey &key,
+bool cHashTableNode<TKey, TData>::AddNoMemory(const TKey &key,
                                       const TData &data, int &itemCount,
                                       int &nodeCount) {
     bool ret = true;
@@ -60,7 +58,7 @@ bool cHashTableNode<TKey, TData>::Add(const TKey &key,
                 mNextNode = new cHashTableNode<TKey, TData>();
                 nodeCount++;
             }
-            ret = mNextNode->Add(key, data, itemCount, nodeCount);
+            ret = mNextNode->AddNoMemory(key, data, itemCount, nodeCount);
         }
     } else {
         mKey = key;
@@ -70,9 +68,8 @@ bool cHashTableNode<TKey, TData>::Add(const TKey &key,
         ret = true;
     }
     return ret;
-}*/
+}
 
-// rekurze s memory
 template<class TKey, class TData>
 bool cHashTableNode<TKey, TData>::Add(const TKey &key, const TData &data, cMemory *memory, int &itemCount, int &nodeCount) {
     bool ret = true;
@@ -101,7 +98,6 @@ bool cHashTableNode<TKey, TData>::Add(const TKey &key, const TData &data, cMemor
     return ret;
 }
 
-// rekurze s memory
 template<class TKey, class TData>
 bool cHashTableNode<TKey, TData>::Find(const TKey &key, TData &data) const {
     bool ret = true;
